@@ -1,4 +1,5 @@
 import { createService, findAllService } from "../services/news.service.js";
+import {ObjectId} from "mongoose";
 
 const create = async (req, res) => {
 
@@ -15,7 +16,7 @@ const create = async (req, res) => {
             title,
             text,
             banner,
-            id
+            user: { _id: "66b918b48722d24822f8a3b9" }
         })
 
         res.send(201);
@@ -24,9 +25,16 @@ const create = async (req, res) => {
     }
 }
 
-const findAll = (req, res) => {
-    const news = [];
+const findAll = async (req, res) => {
+    const news = await findAllService();
+
+    if (news.length == 0) {
+        return res
+          .status(400)
+          .send({ message: "There are not registered news" });
+      }
+
     res.send(news);
 }
 
-export default { create, findAll }
+export { create, findAll }
