@@ -1,5 +1,4 @@
 import { createService, findAllService } from "../services/news.service.js";
-import { ObjectId } from "mongoose";
 
 const create = async (req, res) => {
   try {
@@ -16,7 +15,7 @@ const create = async (req, res) => {
         title,
         text,
         banner,
-        user: {_id:"66aff379f167fb530eeb785d"},
+        user: req.userId,
     })
 
   } catch (err) {
