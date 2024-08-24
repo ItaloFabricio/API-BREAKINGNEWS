@@ -6,6 +6,7 @@ import {
   findByIdService,
   searchByTitleService,
   byUserService,
+  updateService,
 } from "../services/news.service.js";
 
 export const create = async (req, res) => {
@@ -142,11 +143,13 @@ export const findById = async (req, res) => {
 
 export const searchByTitle = async (req, res) => {
   try {
-    const {title} = req.query;
+    const { title } = req.query;
     const news = await searchByTitleService(title);
 
-    if(news.length === 0) {
-      return res.status(400).send({message: "There are no news with this title!"})
+    if (news.length === 0) {
+      return res
+        .status(400)
+        .send({ message: "There are no news with this title!" });
     }
 
     return res.send({
@@ -160,12 +163,12 @@ export const searchByTitle = async (req, res) => {
         name: newsItem.user.name,
         userName: newsItem.user.username,
         userAvatar: newsItem.user.avatar,
-      }))
+      })),
     });
   } catch (err) {
     res.status(500).send({ message: err.mesage });
-  } 
-}
+  }
+};
 
 export const byUser = async (req, res) => {
   try {
@@ -183,9 +186,36 @@ export const byUser = async (req, res) => {
         name: news.user.name,
         userName: news.user.username,
         userAvatar: news.user.avatar,
-      }))
+      })),
     });
   } catch (err) {
     res.status(500).send({ message: err.mesage });
-  } 
-}
+  }
+};
+
+export const update = async (req, res) => {
+  try {
+    const { title, text, banner } = req.body;
+    const { id } = req.params;
+
+    if (!title && !banner && !text) {
+      res.status(400).send({
+        message: "Submit all fields for registration",
+      });
+    }
+
+    const news = await findByIdService(id);
+
+    if (news.user.id != req.userId) {
+      return res.status(400).send({
+        message: "You didn't update this post",
+      });
+    }
+
+    await updateService(id, title, text, banner);
+
+    return res.send({ message: "Post successfully update!" });
+  } catch (err) {
+    res.status(500).send({ message: err.mesage });
+  }
+};
