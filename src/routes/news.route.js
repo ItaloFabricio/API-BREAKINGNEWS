@@ -9,6 +9,7 @@ import {
   searchByTitle,
   byUser,
   update,
+  erase
 } from "../controllers/news.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 
@@ -18,6 +19,7 @@ router.get("/top", topNews);
 router.get("/search", searchByTitle);
 router.get("/byUser", authMiddleware, byUser);
 router.patch("/:id", authMiddleware, update);
+router.delete("/:id", authMiddleware, erase);
 
 router.get("/:id", authMiddleware, findById);
 
