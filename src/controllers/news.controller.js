@@ -205,7 +205,7 @@ export const update = async (req, res) => {
       });
     }
 
-    const news = await findByIdService(id);
+    const news = req.news;
 
     if (news.user.id != req.userId) {
       return res.status(400).send({
@@ -217,6 +217,7 @@ export const update = async (req, res) => {
 
     return res.send({ message: "Post successfully update!" });
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: err.mesage });
   }
 };
@@ -224,8 +225,9 @@ export const update = async (req, res) => {
 export const erase = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const news = req.news;
     
-    const news = await findByIdService(id);
     if (news.user.id != req.userId) {
       return res.status(400).send({
         message: "You didn't delete this post",
