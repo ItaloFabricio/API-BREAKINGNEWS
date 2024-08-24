@@ -5,6 +5,7 @@ import {
   topNewsService,
   findByIdService,
   searchByTitleService,
+  byUserService,
 } from "../services/news.service.js";
 
 export const create = async (req, res) => {
@@ -159,6 +160,29 @@ export const searchByTitle = async (req, res) => {
         name: newsItem.user.name,
         userName: newsItem.user.username,
         userAvatar: newsItem.user.avatar,
+      }))
+    });
+  } catch (err) {
+    res.status(500).send({ message: err.mesage });
+  } 
+}
+
+export const byUser = async (req, res) => {
+  try {
+    const id = req.userId;
+    const news = await byUserService(id);
+
+    return res.send({
+      results: news.map((news) => ({
+        id: news._id,
+        title: news.title,
+        text: news.text,
+        banner: news.banner,
+        likes: news.likes,
+        comments: news.comments,
+        name: news.user.name,
+        userName: news.user.username,
+        userAvatar: news.user.avatar,
       }))
     });
   } catch (err) {
