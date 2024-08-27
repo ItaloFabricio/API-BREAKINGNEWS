@@ -255,7 +255,7 @@ export const likeNews = async (req, res) => {
 
     if (!newsLiked) {
       await deleteLikeNewsService(id, userId);
-      return res.status(200).send({ message: "Like successuflly removed!" });
+      return res.status(200).send({ message: "Like successfully removed!" });
     }
 
     res.send({ message: "Like done successuflly !" });
@@ -268,7 +268,7 @@ export const addComment = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.userId;
-    const { comment } = req.body;
+    const comment  = req.body;
 
     if (!comment) {
       return res.status(400).send({ message: "Write a message to comment" });
