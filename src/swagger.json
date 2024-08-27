@@ -506,7 +506,7 @@
             "in": "path",
             "name": "id",
             "type": "string",
-            "description": "User ID",
+            "description": "News ID",
             "required": true
           }
         ],
