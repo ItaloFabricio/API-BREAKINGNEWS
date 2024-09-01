@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node --no-warnings server.js",
-    "dev": "nodemon --no-warnings server.js"
+    "dev": "nodemon --no-warnings server.js "
   },
   "keywords": [],
   "author": "Italo Fabrício",

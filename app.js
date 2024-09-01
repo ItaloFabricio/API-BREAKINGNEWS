@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import connectDatabase from './src/database/db.js';
 import dotenv from 'dotenv';
-import router from './routes/index.js';
+import router from './src/routes/index.js';
 
 dotenv.config();
 
