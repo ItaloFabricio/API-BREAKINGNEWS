@@ -2,10 +2,9 @@ import authService from "../services/auth.service.js";
 import bcrypt from "bcrypt";
 import userRepositories from "../repositories/user.repositories.js";
 
-const createUserService = async (body) => {
+const createUserService = async (body, res) => {
   const { name, username, email, password, avatar, background } = body;
 
-  try {
     if (!name || !username || !email || !password || !avatar || !background) {
       throw new Error("Submit all fields for registration!");
     }
@@ -19,7 +18,7 @@ const createUserService = async (body) => {
       background,
     };
 
-    const user = await userService.createUserRepository(newUser);
+    const user = await userRepositories.createRepository(newUser);
 
     if (!user) {
       throw new Error("Error creating User");
@@ -39,9 +38,6 @@ const createUserService = async (body) => {
       },
       token,
     };
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
 };
 
 const findAllService = async () => {

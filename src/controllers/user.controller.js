@@ -1,14 +1,20 @@
 import userService from "../services/user.service.js";
 
 const create = async (req, res) => {
+  const { name, username, email, password, avatar, background } = req.body;
+
   try {
-    const body = req.body; //receber todos os campos
-
-    const user = await userService.createUserService(body);
-
-    return res.status(201).send(user);
-  } catch (err) {
-    res.status(500).send({ message: err.message });
+    const token = await userService.createUserService({
+      name,
+      username,
+      email,
+      password,
+      avatar,
+      background,
+    });
+    res.status(201).send(token);
+  } catch (e) {
+    return res.status(400).send(e.message);
   }
 };
 
