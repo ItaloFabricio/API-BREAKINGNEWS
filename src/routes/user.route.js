@@ -4,7 +4,7 @@ import { validId, validUser } from "../middlewares/global.middleware.js";
 
 const userRouter = Router();
 
-userRouter.post("/", userController.create);
+userRouter.post("/create", userController.create);
 userRouter.get("/", userController.findAll);
 userRouter.get("/:id", validId, validUser, userController.FindById);
 userRouter.patch("/:id", validId, validUser, userController.update);

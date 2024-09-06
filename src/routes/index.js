@@ -13,3 +13,5 @@ router.use('/news', newsRoute);
 router.use('/doc', swaggerRoute);
 
 export default router;
+
+//arquivo para deixar apenas as rotas de cada módulo

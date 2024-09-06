@@ -14,3 +14,7 @@ app.use(cors());
 app.use(router);
 
 export default app;
+
+//carrega variáveis de ambiente, se conecta ao banco de dados, configura middlewares essenciais 
+//(como JSON parsing e CORS), 
+//monta as rotas da aplicação.
