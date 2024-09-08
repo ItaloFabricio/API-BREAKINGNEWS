@@ -53,7 +53,7 @@ const findAllService = async () => {
   }
 };
 
-const FindByIdService = async (userIdParam, userIdLogged) => {
+const findByIdService = async (userIdParam, userIdLogged) => {
   //userIdParam é o ID do usuário que você está procurando, passado como parâmetro.
   //userIdLogged é o ID do usuário atualmente logado.
   
@@ -102,6 +102,6 @@ const updateService = async (body, userId, userIdLogged) => {
 export default {
   createUserService,
   findAllService,
-  FindByIdService,
+  findByIdService,
   updateService,
 };

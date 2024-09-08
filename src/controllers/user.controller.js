@@ -28,14 +28,14 @@ const findAll = async (req, res) => {
 };
 
 const FindById = async (req, res) => {
-  const {id: userId} = req.params;
-  const userIdLogged = req.userId;
-
   try {
-    const user = await userService.FindByIdService(userId, userIdLogged);
-    res.send(user);
-  } catch (err) {
-    res.status(500).send({ message: err.message });
+    const user = await userService.findByIdService(
+      req.params.id,
+      req.userId
+    );
+    return res.send(user);
+  } catch (e) {
+    return res.status(400).send(e.message);
   }
 };
 
