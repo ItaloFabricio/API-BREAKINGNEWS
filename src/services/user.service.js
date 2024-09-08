@@ -56,7 +56,7 @@ const findAllService = async () => {
 const FindByIdService = async (userIdParam, userIdLogged) => {
   //userIdParam é o ID do usuário que você está procurando, passado como parâmetro.
   //userIdLogged é o ID do usuário atualmente logado.
-  try {
+  
     let idParam;
     if (!userIdParam) {
       //se não tiver ID na busca
@@ -73,9 +73,6 @@ const FindByIdService = async (userIdParam, userIdLogged) => {
     if (!user) throw new Error("User not found");
 
     return user;
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
 };
 
 const updateService = async (body, userId, userIdLogged) => {
