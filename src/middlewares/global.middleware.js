@@ -3,17 +3,18 @@ import userService from "../services/user.service.js";
 import { findByIdService } from "../services/news.service.js";
 
 export const validId = (req, res, next) => {
-  try {
-    const id = req.params.id;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).send({ message: "Invalid ID" });
-    }
-
-    next();
-  } catch (err) {
-    res.status(500).send({ message: err.message });
+  let idParam;
+  if (!req.params.id) {
+    req.params.id = req.userId;
+    idParam = req.params.id;
+  } else {
+    idParam = req.params.id;
   }
+
+  if (!mongoose.Types.ObjectId.isValid(idParam)) {
+    return res.status(400).send({ message: "Invalid id!" });
+  }
+  next();
 };
 
 export const validUser = async (req, res, next) => {
