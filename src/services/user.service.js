@@ -41,38 +41,32 @@ const createUserService = async (body) => {
 };
 
 const findAllService = async () => {
-  try {
-    const users = await userService.findAllRepository();
+  
+    const users = await userRepositories.findAllRepository();
     if (users.length == 0) {
       throw new Error("There are not registered users");
     }
 
     return users;
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
+  
 };
 
 const findByIdService = async (userIdParam, userIdLogged) => {
-  //userIdParam é o ID do usuário que você está procurando, passado como parâmetro.
-  //userIdLogged é o ID do usuário atualmente logado.
-  
-    let idParam;
-    if (!userIdParam) {
-      //se não tiver ID na busca
-      userIdParam = userIdLogged; //ele é definido como userIdLogged
-      idParam = userIdParam;
-    } else {
-      idParam = userIdParam;
-    }
-    if (!idParam)
-      throw new Error("Send an id in the parameters to search for the user");
+  let idParam;
+  if (!userIdParam) {
+    userIdParam = userIdLogged;
+    idParam = userIdParam;
+  } else {
+    idParam = userIdParam;
+  }
+  if (!idParam)
+    throw new Error("Send an id in the parameters to search for the user");
 
-    const user = await userRepositories.findByIdRepository(idParam);
+  const user = await userRepositories.findByIdRepository(idParam);
 
-    if (!user) throw new Error("User not found");
+  if (!user) throw new Error("User not found");
 
-    return user;
+  return user;
 };
 
 const updateService = async (body, userId, userIdLogged) => {

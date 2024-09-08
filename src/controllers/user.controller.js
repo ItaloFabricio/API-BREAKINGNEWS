@@ -27,7 +27,7 @@ const findAll = async (req, res) => {
   }
 };
 
-const FindById = async (req, res) => {
+const findById = async (req, res) => {
   try {
     const user = await userService.findByIdService(
       req.params.id,
@@ -53,4 +53,4 @@ const update = async (req, res) => {
   }
 };
 
-export default { create, findAll, FindById, update };
+export default { create, findAll, findById, update };

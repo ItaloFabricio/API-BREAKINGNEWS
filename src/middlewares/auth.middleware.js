@@ -30,7 +30,7 @@ export const authMiddleware = (req, res, next) =>  {
             }
             console.log(decoded);
 
-            const user = await userService.FindByIdService(decoded.id);
+            const user = await userService.findByIdService(decoded.id);
             console.log(user);
 
             if(!user || !user.id) {
