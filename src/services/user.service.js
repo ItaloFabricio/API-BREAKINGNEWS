@@ -28,14 +28,14 @@ const createUserService = async (body) => {
 
     return {
       message: "User created sucessfully",
-      user: {
+      /* user: {
         id: user._id,
         name,
         username,
         email,
         avatar,
         background,
-      },
+      }, */
       token,
     };
 };
