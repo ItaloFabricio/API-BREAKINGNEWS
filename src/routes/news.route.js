@@ -17,7 +17,7 @@ import {
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { validNews } from "../middlewares/global.middleware.js";
 
-router.post("/", authMiddleware, create);
+router.post("/create", authMiddleware, create);
 router.get("/", findAll);
 router.get("/top", topNews);
 router.get("/search", searchByTitle);
