@@ -28,6 +28,6 @@ router.patch("/like/:id", authMiddleware, likeNews);
 router.patch("/comment/:id" , authMiddleware, addComment);
 router.patch("/comment/:idNews/:idComment", authMiddleware, deleteComment);
 
-router.get("/:id", authMiddleware, findById);
+router.get("/byIdNews/:id", authMiddleware, findById);
 
 export default router;
