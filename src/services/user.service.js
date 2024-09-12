@@ -71,7 +71,7 @@ const findByIdService = async (userIdParam, userIdLogged) => {
 
 const updateService = async (body, userId, userIdLogged) => {
   const { name, username, email, password, avatar, background } = body;
-  try {
+  
     if (!name && !username && !email && !password && !avatar && !background) {
       throw new Error("Submit at least one field for update!");
     }
@@ -88,9 +88,7 @@ const updateService = async (body, userId, userIdLogged) => {
     await userService.updateService(userId, body);
 
     return { message: "User successfully update!" };
-  } catch (err) {
-    res.status(500).send({ message: err.message });
-  }
+  
 };
 
 export default {
