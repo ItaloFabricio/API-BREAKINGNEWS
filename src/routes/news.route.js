@@ -22,7 +22,7 @@ router.get("/", findAll);
 router.get("/top", topNews);
 router.get("/search", searchByTitle);
 router.get("/byUser", authMiddleware, byUser);
-router.patch("update/:id", authMiddleware, validNews, update);
+router.patch("/update/:id", authMiddleware, validNews, update);
 router.delete("/:id", authMiddleware, validNews, erase);
 router.patch("/like/:id", authMiddleware, likeNews);
 router.patch("/comment/:id" , authMiddleware, addComment);
