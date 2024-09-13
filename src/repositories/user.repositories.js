@@ -6,14 +6,27 @@ const findAllRepository = () => User.find();
 
 const findByIdRepository = (id) => User.findById(id);
 
-const updadeRepository = (
-  id,
-  body
+const updateRepository = (
+  userId,
+  name,
+  username,
+  email,
+  password,
+  avatar,
+  background
 ) =>
   User.findOneAndUpdate(
-    { _id: id },
+    { _id: userId },
     {
-      body
+      name,
+      username,
+      email,
+      password,
+      avatar,
+      background,
+    },
+    {
+      rawResult: true,
     }
   );
 
@@ -21,5 +34,5 @@ export default {
   createRepository,
   findAllRepository,
   findByIdRepository,
-  updadeRepository,
+  updateRepository,
 };

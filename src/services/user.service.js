@@ -1,34 +1,36 @@
 import authService from "../services/auth.service.js";
 import bcrypt from "bcrypt";
 import userRepositories from "../repositories/user.repositories.js";
+import User from "../models/User.js";
+import mongoose from "mongoose";
 
 const createUserService = async (body) => {
   const { name, username, email, password, avatar, background } = body;
 
-    if (!name || !username || !email || !password || !avatar || !background) {
-      throw new Error("Submit all fields for registration!");
-    }
+  if (!name || !username || !email || !password || !avatar || !background) {
+    throw new Error("Submit all fields for registration!");
+  }
 
-    const newUser = {
-      name,
-      username,
-      email,
-      password,
-      avatar,
-      background,
-    };
+  const newUser = {
+    name,
+    username,
+    email,
+    password,
+    avatar,
+    background,
+  };
 
-    const user = await userRepositories.createRepository(newUser);
+  const user = await userRepositories.createRepository(newUser);
 
-    if (!user) {
-      throw new Error("Error creating User");
-    }
+  if (!user) {
+    throw new Error("Error creating User");
+  }
 
-    const token = authService.generateToken(user.id);
+  const token = authService.generateToken(user.id);
 
-    return {
-      message: "User created sucessfully",
-      /* user: {
+  return {
+    message: "User created sucessfully",
+    /* user: {
         id: user._id,
         name,
         username,
@@ -36,60 +38,37 @@ const createUserService = async (body) => {
         avatar,
         background,
       }, */
-      token,
-    };
+    token,
+  };
 };
 
-const findAllService = async () => {
-  
-    const users = await userRepositories.findAllRepository();
-    if (users.length == 0) {
-      throw new Error("There are not registered users");
+const findAllService = () => User.find();
+
+const findByIdService = (id) => User.findById(id);
+
+const updateService = (
+  userId,
+  name,
+  username,
+  email,
+  password,
+  avatar,
+  background
+) =>
+  User.findOneAndUpdate(
+    { _id: userId },
+    {
+      name,
+      username,
+      email,
+      password,
+      avatar,
+      background,
+    },
+    {
+      rawResult: true,
     }
-
-    return users;
-  
-};
-
-const findByIdService = async (userIdParam, userIdLogged) => {
-  let idParam;
-  if (!userIdParam) {
-    userIdParam = userIdLogged;
-    idParam = userIdParam;
-  } else {
-    idParam = userIdParam;
-  }
-  if (!idParam)
-    throw new Error("Send an id in the parameters to search for the user");
-
-  const user = await userRepositories.findByIdRepository(idParam);
-
-  if (!user) throw new Error("User not found");
-
-  return user;
-};
-
-const updateService = async (body, userId, userIdLogged) => {
-  const { name, username, email, password, avatar, background } = body;
-
-    if (!name && !username && !email && !password && !avatar && !background) {
-      throw new Error("Submit at least one field for update!");
-    }
-
-    const user = await userRepositories.findByIdRepository(userId);
-
-    if (user._id != userIdLogged)
-      throw new Error("You cannot update this user");
-
-    if (password) {
-      password = await bcrypt.hash(password, 10);
-    }
-
-    await userRepositories.updadeRepository(userId, body);
-
-    return { message: "User successfully update!" };
-  
-};
+  );
 
 export default {
   createUserService,

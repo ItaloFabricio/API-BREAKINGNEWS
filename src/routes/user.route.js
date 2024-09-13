@@ -12,6 +12,6 @@ userRouter.get("/", userController.findAll);
 
 userRouter.use(validId);
 userRouter.get("/findById/:id?", userController.findById);
-userRouter.patch("/update/:id",  userController.update);
+userRouter.patch("/update/:id", validId, validUser, userController.update);
 
 export default userRouter;
