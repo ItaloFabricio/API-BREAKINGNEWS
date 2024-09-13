@@ -32,7 +32,7 @@ const findAll = async (req, res) => {
    res.send(users);
 };
 
-const findById = async (req, res) => {
+/* const findById = async (req, res) => {
   const id = req.id;
 
  const user = await userService.findByIdService(id);
@@ -42,7 +42,25 @@ const findById = async (req, res) => {
  }
 
  res.send(user);
-};
+}; */
+
+async function findById(userIdParam, userIdLogged) {
+  let idParam;
+  if (!userIdParam) {
+    userIdParam = userIdLogged;
+    idParam = userIdParam;
+  } else {
+    idParam = userIdParam;
+  }
+  if (!idParam)
+    throw new Error('Send an id in the parameters to search for the user');
+
+  const user = await userService.findByIdService(idParam);
+
+  if (!user) throw new Error('User not found');
+
+  return user;
+}
 
 const update = async (req, res) => {
   const { name, username, email, password, avatar, background } = req.body;
