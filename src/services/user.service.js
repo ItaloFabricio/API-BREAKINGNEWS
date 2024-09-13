@@ -71,7 +71,7 @@ const findByIdService = async (userIdParam, userIdLogged) => {
 
 const updateService = async (body, userId, userIdLogged) => {
   const { name, username, email, password, avatar, background } = body;
-  
+
     if (!name && !username && !email && !password && !avatar && !background) {
       throw new Error("Submit at least one field for update!");
     }
@@ -85,7 +85,7 @@ const updateService = async (body, userId, userIdLogged) => {
       password = await bcrypt.hash(password, 10);
     }
 
-    await userService.updateService(userId, body);
+    await userRepositories.updadeRepository(userId, body);
 
     return { message: "User successfully update!" };
   
