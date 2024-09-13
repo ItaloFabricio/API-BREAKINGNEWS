@@ -33,7 +33,7 @@ const findAll = async (req, res) => {
 };
 
 const findById = async (req, res) => {
-  const id = req.params.id;
+  const id = req.id;
 
  const user = await userService.findByIdService(id);
 
