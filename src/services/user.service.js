@@ -89,7 +89,7 @@ async function findUserByIdService(userIdParam, userIdLogged) {
   return { message: 'User successfully updated!' };
 } */
 
-  const updateUserService = async (reqBody, userId, userIdLogged) => {
+  const updateUserService = async (reqBody, userId) => {
     if (!reqBody.name && !reqBody.username && !reqBody.email && !reqBody.avatar && !reqBody.password && !reqBody.background) {
       throw new Error("Submit at least one field to update the user");
     }
@@ -108,7 +108,7 @@ async function findUserByIdService(userIdParam, userIdLogged) {
       throw new Error("User not found");
     }
     
-    const data = await userRepositories.updateUserRepository(
+    await userRepositories.updateUserRepository(
       userId,
       reqBody.name,
       reqBody.username,
@@ -117,7 +117,9 @@ async function findUserByIdService(userIdParam, userIdLogged) {
       reqBody.avatar,
       reqBody.background
     );
-  
+    
+    const data = await userRepositories.findByIdUserRepository(userId);
+    delete data.password;
     return data;
   }
 

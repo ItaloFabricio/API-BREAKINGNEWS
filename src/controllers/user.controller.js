@@ -23,13 +23,12 @@ const create = async (req, res) => {
 };
 
 const findAll = async (req, res) => {
-  const users = await userService.findAllService();
-   
-  if(users.length === 0) {
-    return res.status(400).send({ message: "There are no registered users" });
-   }
-
-   res.send(users);
+  try {
+    const users = await userService.findAllUserService();
+    return res.send(users);
+  } catch (e) {
+    return res.status(404).send(e.message);
+  }
 };
 
 /* const findById = async (req, res) => {
@@ -44,25 +43,32 @@ const findAll = async (req, res) => {
  res.send(user);
 }; */
 
-async function findById(userIdParam, userIdLogged) {
-  let idParam;
-  if (!userIdParam) {
-    userIdParam = userIdLogged;
-    idParam = userIdParam;
-  } else {
-    idParam = userIdParam;
+async function findById(req, res) {
+  try {
+    const user = await userService.findUserByIdService(
+      req.params.id,
+      req.userId,
+    );
+    return res.send(user);
+  } catch (e) {
+    return res.status(400).send(e.message);
   }
-  if (!idParam)
-    throw new Error('Send an id in the parameters to search for the user');
-
-  const user = await userService.findByIdService(idParam);
-
-  if (!user) throw new Error('User not found');
-
-  return user;
 }
 
-const update = async (req, res) => {
+async function update(req, res) {
+  try {
+    const userId = req.params.id;
+    const userIdLogged = req.userId;
+
+    const response = await userService.updateUserService(req.body, userId, userIdLogged);
+    return res.send(response);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+}
+
+
+/* const update = async (req, res) => {
   const { name, username, email, password, avatar, background } = req.body;
 
   if (!name && !username && !email && !avatar && !password && !background) {
@@ -85,7 +91,7 @@ const update = async (req, res) => {
     return res.status(400).send({ message: "User not found" });
   }
 
-  await userService.updateService(
+  await userService.updateUserService(
     userId,
     name,
     username,
@@ -96,6 +102,6 @@ const update = async (req, res) => {
   );
 
   res.send({ message: "User successfully updated!" });
-};
+}; */
 
 export default { create, findAll, findById, update };

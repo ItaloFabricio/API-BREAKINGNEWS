@@ -1,22 +1,46 @@
-import User from "../models/User.js";
+import User from '../models/User.js';
 
-const createRepository = (body) => User.create(body);
+//To find a user by email
+const findByEmailUserRepository = (email) => User.findOne({ email: email });
 
-const findAllRepository = () => User.find();
-
-const findByIdRepository = (id) => User.findById(id);
-
-const updateRepository = (
-  userId,
+//To create a new user
+const createUserRepository = ({
   name,
   username,
   email,
   password,
   avatar,
-  background
+  background,
+}) =>
+  User.create({
+    name,
+    username,
+    email,
+    password,
+    avatar,
+    background,
+  });
+
+//To find all users
+const findAllUserRepository = () => User.find();
+
+//To find a user by ID
+const findByIdUserRepository = (idUser) => User.findById(idUser);
+
+//To update a user by ID
+const updateUserRepository = (
+  id,
+  name,
+  username,
+  email,
+  password,
+  avatar,
+  background,
 ) =>
   User.findOneAndUpdate(
-    { _id: userId },
+    {
+      _id: id,
+    },
     {
       name,
       username,
@@ -27,12 +51,13 @@ const updateRepository = (
     },
     {
       rawResult: true,
-    }
+    },
   );
 
 export default {
-  createRepository,
-  findAllRepository,
-  findByIdRepository,
-  updateRepository,
+  findByEmailUserRepository,
+  createUserRepository,
+  findAllUserRepository,
+  findByIdUserRepository,
+  updateUserRepository,
 };

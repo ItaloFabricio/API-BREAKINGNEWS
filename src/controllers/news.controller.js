@@ -55,7 +55,7 @@ export const findAll = async (req, res) => {
     const news = await findAllService(offset, limit);
     const total = await countNews();
     const currentUrl = req.baseUrl; //armazena a URL base da requisição
-    console.log(total);
+    // console.log(total);
 
     const next = offset + limit; //a próxima página começará a partir da notícia número 5.
 
@@ -221,7 +221,7 @@ export const update = async (req, res) => {
 
     return res.send({ message: "Post successfully update!" });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res.status(500).send({ message: err.mesage });
   }
 };

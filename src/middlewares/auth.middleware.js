@@ -28,10 +28,10 @@ export const authMiddleware = (req, res, next) =>  {
             if(error) {
                 return res.status(401).send({ message: "Token invalid!" });
             }
-            console.log(decoded);
+            // console.log(decoded);
 
-            const user = await userService.findByIdService(decoded.id);
-            console.log(user);
+            const user = await userService.findUserByIdService(decoded.id);
+            // console.log(user);
 
             if(!user || !user.id) {
                 return res.status(401).send({ message: "Invalid token!" });
