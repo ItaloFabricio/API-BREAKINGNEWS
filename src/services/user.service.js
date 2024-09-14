@@ -1,78 +1,129 @@
 import authService from "../services/auth.service.js";
 import bcrypt from "bcrypt";
 import userRepositories from "../repositories/user.repositories.js";
-import User from "../models/User.js";
 import mongoose from "mongoose";
 
-const createUserService = async (body) => {
-  const { name, username, email, password, avatar, background } = body;
+async function createUserService({
+  name,
+  username,
+  email,
+  password,
+  avatar,
+  background,
+}) {
+  if (!username || !name || !email || !password || !avatar || !background)
+    throw new Error('Submit all fields for registration');
 
-  if (!name || !username || !email || !password || !avatar || !background) {
-    throw new Error("Submit all fields for registration!");
-  }
+  const foundUser = await userRepositories.findByEmailUserRepository(email);
 
-  const newUser = {
+  if (foundUser) throw new Error('User already exists');
+
+  const user = await userRepositories.createUserRepository({
     name,
     username,
     email,
     password,
     avatar,
     background,
-  };
+  });
 
-  const user = await userRepositories.createRepository(newUser);
-
-  if (!user) {
-    throw new Error("Error creating User");
-  }
+  if (!user) throw new Error('Error creating User');
 
   const token = authService.generateToken(user.id);
 
-  return {
-    message: "User created sucessfully",
-    /* user: {
-        id: user._id,
-        name,
-        username,
-        email,
-        avatar,
-        background,
-      }, */
-    token,
-  };
-};
+  return token;
+}
 
-const findAllService = () => User.find();
+//Function to find all users on the mongoose
+async function findAllUserService() {
+  const users = await userRepositories.findAllUserRepository();
 
-const findByIdService = (id) => User.findById(id);
+  if (users.length === 0) throw new Error('There are no registered users');
 
-const updateService = (
+  return users;
+}
+
+//Function to find users by id on the mongoose
+async function findUserByIdService(userIdParam, userIdLogged) {
+  let idParam;
+  if (!userIdParam) {
+    userIdParam = userIdLogged;
+    idParam = userIdParam;
+  } else {
+    idParam = userIdParam;
+  }
+  if (!idParam)
+    throw new Error('Send an id in the parameters to search for the user');
+
+  const user = await userRepositories.findByIdUserRepository(idParam);
+
+  if (!user) throw new Error('User not found');
+
+  return user;
+}
+
+/* async function updateUserService(
+  { name, username, email, password, avatar, background },
   userId,
-  name,
-  username,
-  email,
-  password,
-  avatar,
-  background
-) =>
-  User.findOneAndUpdate(
-    { _id: userId },
-    {
-      name,
-      username,
-      email,
-      password,
-      avatar,
-      background,
-    },
-    {
-      rawResult: true,
-    }
+  userIdLogged,
+) {
+  if (!name && !username && !email && !password && !avatar && !background)
+    throw new Error('Submit at least one field to update the user');
+
+  const user = await userRepositories.findByIdUserRepository(userId);
+
+  if (user._id != userIdLogged) throw new Error('You cannot update this user');
+
+  if (password) password = await bcrypt.hash(password, 10);
+
+  await userRepositories.updateUserRepository(
+    userId,
+    name,
+    username,
+    email,
+    password,
+    avatar,
+    background,
   );
+
+  return { message: 'User successfully updated!' };
+} */
+
+  const updateUserService = async (reqBody, userId, userIdLogged) => {
+    if (!reqBody.name && !reqBody.username && !reqBody.email && !reqBody.avatar && !reqBody.password && !reqBody.background) {
+      throw new Error("Submit at least one field to update the user");
+    }
+  
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new Error("Invalid ID");
+    }
+  
+    const user = await userRepositories.findByIdUserRepository(userId);
+  
+    if (reqBody.password) {
+      reqBody.password = await bcrypt.hash(reqBody.password, 10);
+    }
+  
+    if (!user) {
+      throw new Error("User not found");
+    }
+    
+    const data = await userRepositories.updateUserRepository(
+      userId,
+      reqBody.name,
+      reqBody.username,
+      reqBody.email,
+      reqBody.password,
+      reqBody.avatar,
+      reqBody.background
+    );
+  
+    return data;
+  }
 
 export default {
   createUserService,
-  findAllService,
-  findByIdService,
-  updateService,
+  findAllUserService,
+  findUserByIdService,
+  updateUserService,
 };
