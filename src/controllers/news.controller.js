@@ -139,6 +139,7 @@ export const findById = async (req, res) => {
         name: news.user.name,
         userName: news.user.username,
         userAvatar: news.user.avatar,
+        createdAt: news.createdAt,
       },
     });
   } catch (err) {
